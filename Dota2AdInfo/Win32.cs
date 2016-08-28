@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Dota2AdInfo
 {
     class Win32
     {
-        public class User32Wrappers
+        public static class User32Wrappers
         {
 
             public enum GWL : int
@@ -29,10 +30,10 @@ namespace Dota2AdInfo
             }
 
             [DllImport("user32", EntryPoint = "GetWindowLong")]
-            public static extern int GetWindowLong(IntPtr hWnd, GWL nIndex);
+            public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
             [DllImport("user32", EntryPoint = "SetWindowLong")]
-            public static extern int SetWindowLong(IntPtr hWnd, GWL nIndex, WS_EX dsNewLong);
+            public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dsNewLong);
 
             [DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
             public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, int crKey, byte alpha, LWA dwFlags);
