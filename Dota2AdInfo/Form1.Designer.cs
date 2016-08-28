@@ -38,8 +38,11 @@
             this.ClientSize = new System.Drawing.Size(790, 531);
             this.KeyPreview = true;
             this.Name = "Form1";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Black;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);

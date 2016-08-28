@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Dota2AdInfo.Win32.User32Wrappers;
+using static Dota2AdInfo.Win32Delegates;
+using static Dota2AdInfo.Helpers.Helper;
+using Dota2AdInfo.SearchHero;
 
 namespace Dota2AdInfo
 {
     public partial class Form1 : Form
     {
+        internal static event Action<Graphics> OnUpdateFrame = delegate { };
         public Form1()
         {
             InitializeComponent();
@@ -23,7 +19,7 @@ namespace Dota2AdInfo
             DoubleBuffered = true;
             ResizeRedraw = true;
             SetFormToTransparent();
-
+            OnUpdateFrame += HeroSkills.ActiveSkills;
             var th = new Thread(() =>
             {
                 while (true)
@@ -52,10 +48,28 @@ namespace Dota2AdInfo
             //SetLayeredWindowAttributes(Handle, 0, 255 * (0 / 100), LWA.Alpha);
         }
 
+        int i = 0;
+
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.Black);
-            e.Graphics.DrawString("Текст", new Font(FontFamily.Families[0].Name, 40), Brushes.Red, 0, 0);
+            try
+            {
+                e.Graphics.Clear(Color.Black);
+
+                OnUpdateFrame(e.Graphics);
+                var mp = GetCursorPosition();
+                var x = (int)mp.X - 20;
+                var y = (int)mp.Y - 20;
+
+                e.Graphics.DrawString($"x: {mp.X}, y: {mp.Y}", new Font("Console", 7), Brushes.Red, x, y-14);
+                // e.Graphics.DrawString($"Shot! {++i}", new Font("Console", 40), Brushes.Red, 0, 0);
+                
+                e.Graphics.DrawRectangle(new Pen(Color.Red, 0.8f), x, y, 40, 40);
+            }
+            catch
+            {
+                // ignore 
+            }
         }
     }
 }
